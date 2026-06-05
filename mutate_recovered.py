@@ -42,7 +42,8 @@ def dihedral(p0, p1, p2, p3):
     w=b2-np.dot(b2,b1)*b1 #вектора б2
     x=np.dot(v, w) #кос угла между проекциями 
     y=np.dot(np.cross(b1,v),w)#синус угла между проекциями
-    return math.degrees(math.atan2(y, x)) 
+    return np.degrees(np.arctan2(y, x))
+
 def compute_phi_psi(atoms,chain,res_num):
     curr_atoms=atoms_in_residue(atoms,chain,res_num)
     if not curr_atoms:
@@ -212,8 +213,8 @@ def best_rotamer(lib, target_res, phi, psi):
 #КООРДИНАТЫ НОВОГО АТОМА
 
 def add_atom_by_internal(prev3, prev2, prev1, bond_length, bond_angle_deg, dihedral_deg):
-    ang = math.radians(bond_angle_deg) #между прев 1 и новым     
-    dihe = math.radians(dihedral_deg) 
+    ang = np.radians(bond_angle_deg) #между прев 1 и новым     
+    dihe = np.radians(dihedral_deg) 
     #локальная система координат по трем известным атомам
     z_axis=prev1-prev2
     z_axis=z_axis/np.linalg.norm(z_axis)#ось по направлению вдоль сведи между 1 и 2
@@ -225,9 +226,9 @@ def add_atom_by_internal(prev3, prev2, prev1, bond_length, bond_angle_deg, dihed
     x_axis = x_axis / np.linalg.norm(x_axis)
     y_axis = np.cross(z_axis, x_axis)
 
-    dx = bond_length*math.sin(ang)*math.cos(dihe)
-    dy = bond_length*math.sin(ang)*math.sin(dihe)
-    dz = bond_length*math.cos(ang)
+    dx = bond_length*np.sin(ang)*np.cos(dihe)
+    dy = bond_length*np.sin(ang)*np.sin(dihe)
+    dz = bond_length*np.cos(ang)
 
     new_coord = prev1+dx*x_axis+dy*y_axis+dz*z_axis
     return new_coord
